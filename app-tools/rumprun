@@ -773,8 +773,9 @@ bake_iso ()
 	mkdir -p "${ISODIR}/boot/grub"
 	printf 'set timeout=0\n' > "${ISODIR}/boot/grub/grub.cfg"
 	printf 'menuentry "rumpkernel" {\n' >> "${ISODIR}/boot/grub/grub.cfg"
-	printf '\tmultiboot /boot/%s _RUMPRUN_ROOTFSCFG=/json.cfg\n}\n' \
+	printf '\tmultiboot /boot/%s \n' \
 	    $(basename $1) >> "${ISODIR}/boot/grub/grub.cfg"
+        printf '\tmodule /json.cfg cmdline  \n}\n' >> "${ISODIR}/boot/grub/grub.cfg"
 	cp ${bootimage} "${ISODIR}/boot"
 	cp "${TMPDIR}/json.cfg" "${ISODIR}"
 	grub-mkrescue -o ${opt_name} "${ISODIR}"
